@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{{ title }}</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type='text/css' href="../static/style.css">
+    </head>
+    <body>
+        <div class="header">
+            <div class="title">
+                <h1>CheaperPrice</h1>
+            </div>
+            <div class="email_enter">
+                <div class='email-form'>
+                    <p>Email: </p>
+                    <form name="email_form" action="{{ url_for('checkEmail') }}", method="post">
+                        <input type="text" name="email"></input>
+                        <button type='submit'>Submit</button>
+                    </form>
+                </div>
+                <div class="signed_in">
+                    {{ signedIn }}
+                </div>
+            </div>
+        </div>
+        <div class='main-container'>
+            <div class="welcome-message">
+                <p>Welcome to CheaperPrice, the program that searches through stores to find you the best price at the best location.
+                <p>Enter a product name to search for:</p>
+                <form name="product_search" action="{{ url_for('searchProduct') }}", method="post">
+                    <input type='text' name="product"></input>
+                    <button type='submit'>Search</button>
+                </form>
+                <form name="saveToFile" onsubmit="">
+                    <button type='submit'>Save To File</button>
+                </form>
+                <form name="saveToDatabase" onsubmit="">
+                    <button type="submit">Save to Account</button>
+                </form>
+            </div>
+            <div class="search-list">
+                <h3>Search Results:</h3>
+                <div class="search-item">
+                    {% for x in searchItems: %}
+                        <form action="{{ url_for('saveItem') }}" method='post'>
+                            <p type='text' name='item' value='{{ x }}'>{{ x }}</p>
+                            <button  type='submit'>Save Item</button>
+                        </form>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="personal-list">
+                <h3>Personal List:</h3>
+                <ul>
+                    <li>Option 2 Chosen</li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

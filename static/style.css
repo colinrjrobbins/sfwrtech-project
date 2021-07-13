@@ -88,6 +88,10 @@
     flex-grow: 1;
 }
 
+.welcome-message form{
+    padding: 10px;
+}
+
 .welcome-message p {
     padding-top: 10px;
 }
@@ -110,7 +114,7 @@
 
 .personal-list{
     display: inherit;
-    width: 30%;
+    width: 40%;
     flex-direction: column;
     align-items: center;
 }
@@ -124,5 +128,5 @@
 .search-item{
     display:flex;
     flex-direction: column;
-    border: 1px solid;
+    border-bottom: 1px solid;
 }

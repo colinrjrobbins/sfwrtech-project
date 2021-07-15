@@ -6,7 +6,6 @@ app = Flask(__name__,
 
 listHold = []
 savedList = []
-ITERATE = 0
 
 @app.route('/')
 def main():
@@ -18,10 +17,13 @@ def main():
 def searchProduct():
     # api call to check product information
     product_search = request.form['product']
-    listHold.append({'id':ITERATE+1,
+    listHold.append({'id': None,
                      'name':product_search})
-    
     print(product_search)
+    print(listHold)
+    for x in range(0,len(listHold)):
+        listHold[x]['id'] = x
+
     print(listHold)
     return render_template('index.html',
                            title="CheaperPrice", 
@@ -39,9 +41,15 @@ def checkEmail():
                            savedItems=savedList,
                            signedIn=email)
 
-@app.route('/saveItem', methods=['POST'])
+@app.route('/saveItem', methods=['GET','POST'])
 def saveItem():
-    choice = request.form['name']
+    try:
+        choice = request.form.get['0']
+        print(choice)
+    except:
+        print("No Gather")
+                
+    choice = request.get_data()
     savedData = request.data
     savedList.append(choice)
     print(choice)

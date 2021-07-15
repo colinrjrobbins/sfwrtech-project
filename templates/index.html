@@ -30,14 +30,14 @@
             <div class="welcome-message">
                 <p>Welcome to CheaperPrice, the program that searches through stores to find you the best price at the best location.
                 <p>Enter a product name to search for:</p>
-                <form name="product_search" action="{{ url_for('searchProduct') }}" method="post">
+                <form name="product_search" action="{{ url_for('searchProduct') }}" method="POST">
                     <input type='text' name="product"></input>
                     <button type='submit'>Search</button>
                 </form>
-                <form name="saveList" action="{{ url_for('saveList') }}" method="post">
+                <form name="saveList" action="{{ url_for('saveList') }}" method="POST">
                     <button type='submit'>Save List</button>
                 </form>
-                <form name="sendAsEmail" action="{{ url_for('sendAsEmail') }}" method="post">
+                <form name="sendAsEmail" action="{{ url_for('sendAsEmail') }}" method="POST">
                     <button type="submit">Send to Email</button>
                 </form>
             </div>
@@ -45,8 +45,8 @@
                 <h3>Search Results:</h3>
                 {% for item in searchItems: %}
                     <div class="search-item">
-                        <form action="{{ url_for('saveItem') }}" method="post">
-                            <p id="{{ item.id }}" name="{{ item.name }}">{{ item.name }}</p>
+                        <form action="{{ url_for('saveItem') }}" method="POST">
+                            <p name="{{ item.id }}" value="{{ item.name }}">{{ item.name }}</p>
                             <button  type='submit'>Save Item</button>
                         </form>
                     </div>
@@ -56,7 +56,7 @@
                 <h3>Personal List:</h3>
                 {% for item in savedItems: %}
                     <div class="search-item">
-                        <p id="{{ item.id }}" name="{{ item.name }}">{{ item.name }}</p>
+                        <p id="{{ item.id }}" name="{{ item.name|string }}">{{ item.name }}</p>
                     </div>
                 {% endfor %}
             </div>

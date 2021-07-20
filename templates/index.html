@@ -11,13 +11,13 @@
     <body>
         <div class="header">
             <div class="title">
-                <h1>CheaperPrice</h1>
+                <h1>MovieList</h1>
             </div>
             <div class="email_enter">
                 <div class='email-form'>
                     <p>Email: </p>
-                    <form name="email_form" action="{{ url_for('checkEmail') }}", method="post">
-                        <input type="text" name="email"></input>
+                    <form name="signIn" action="{{ url_for('checkEmail') }}", method="POST">
+                        {{ email_form.email }}
                         <button type='submit'>Submit</button>
                     </form>
                 </div>
@@ -28,11 +28,17 @@
         </div>
         <div class='main-container'>
             <div class="welcome-message">
-                <p>Welcome to CheaperPrice, the program that searches through stores to find you the best price at the best location.
+                <p>Welcome to MovieList, the program that searches the internet and helps you put together a list of movies to watch.
                 <p>Enter a product name to search for:</p>
-                <form name="product_search" action="{{ url_for('searchProduct') }}" method="POST">
-                    <input type='text' name="product"></input>
-                    <button type='submit'>Search</button>
+                <form method="POST" action="{{ url_for('main') }}">
+                    {{ form.csrf_token }}
+                    <label>Movie Name:</label>
+                    {{ form.movieName }}
+                    <label>Genre:</label>
+                    {{ form.genre }}
+                    <label>Year:</label>
+                    {{ form.year }}
+                    <button type="submit">Search</button> 
                 </form>
                 <form name="saveList" action="{{ url_for('saveList') }}" method="POST">
                     <button type='submit'>Save List</button>

@@ -6,7 +6,7 @@
         <title>{{ title }}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type='text/css' href="../static/style.css">
+        <link rel="stylesheet" type='text/css' href="{{ url_for('static',filename='stylesheets/style.css') }}">
     </head>
     <body>
         <div class="header">
@@ -14,14 +14,8 @@
                 <h1>MovieList</h1>
             </div>
             <div class="email_enter">
-                <div class='email-form'>
-                    <p>Email: </p>
-                    <form name="signIn" action="{{ url_for('checkEmail') }}", method="POST">
-                        {{ email_form.email }}
-                        <button type='submit'>Submit</button>
-                    </form>
-                </div>
                 <div class="signed_in">
+                    <p>Signed in as:</p>
                     {{ signedIn }}
                 </div>
             </div>
@@ -29,8 +23,8 @@
         <div class='main-container'>
             <div class="welcome-message">
                 <p>Welcome to MovieList, the program that searches the internet and helps you put together a list of movies to watch.
-                <p>Enter a product name to search for:</p>
-                <form method="POST" action="{{ url_for('main') }}">
+                <p>Enter a movie name to search for:</p>
+                <form method="POST" action="{{ url_for('searchMovie') }}">
                     {{ form.csrf_token }}
                     <label>Movie Name:</label>
                     {{ form.movieName }}
@@ -52,8 +46,10 @@
                 {% for item in searchItems: %}
                     <div class="search-item">
                         <form action="{{ url_for('saveItem') }}" method="POST">
-                            <p name="{{ item.id }}" value="{{ item.name }}">{{ item.name }}</p>
-                            <button  type='submit'>Save Item</button>
+                            {{ searchItems.csrf_token }}
+                            {{ item.movie_name }}
+                            {{ item.description }}
+                            {{ item.submit }}
                         </form>
                     </div>
                 {% endfor %}

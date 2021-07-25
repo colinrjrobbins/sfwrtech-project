@@ -119,6 +119,7 @@ class UseDatabase:
         
                 for item in movie_list:
                     # movie_list is setup as ['IMDb/TMDb','Movie Name','Movie Description']
+                    item[2] = item[2].replace("'","")
                     query = "INSERT INTO user_list(email, movie_name, movie_description, search_type, saved_date) VALUES('"+email+"','"+item[1]+"','"+item[2]+"','"+item[0]+"','"+format_date+"')"
                     cursor.execute(query)
                     self.db.conn.commit()

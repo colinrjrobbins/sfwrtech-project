@@ -120,6 +120,7 @@ class Menu:
                   '(CTRL+C)\tReturn to Menu\n')
             try:
                 movieString = input('Movie Name ==> ')
+                print("Search takes roughly 30 seconds to complete...")
                 results = self.__search.search(movieString)
                 while True:
                     print(header+\

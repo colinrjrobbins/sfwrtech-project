@@ -1,24 +1,44 @@
+#######################################################
+# Program: MovieList
+# Classes: Menu
+# Purpose: Main interface for the program. Is used as a
+#          visual menu display as well as a main access
+#          to create required classes.
+####################################################### 
+
+# CUSTOM IMPORTS
 from modules.objectsql import UseDatabase
 from modules.apicalls import Search
 from modules.user import User
 from modules.sendsave import SendEmail, SaveFile
 class Menu:
+    """Used to create and execute different visual menues for ease of access."""
+
     def __init__(self):
+        """Upon instantiated creates the base User() class, the UseDatabase() class
+        and the Search() class."""
+
         self.__user = User()
         self.__option = None
         self.__db = UseDatabase()
         self.__search = Search()
 
     def login_menu(self):
+        """Simple menu used to gather the users email and check it with the database
+        to determine whether the list should be recovered or not."""
+
         while self.__user.email == None or self.__user.email == '':
             print('Welcome to MovieList!' +\
                 '\nPlease enter your email to continue.\n')
             email = input('Email ==> ')
+
             self.__user.update_email(email)
+            
             if self.__user.email == None or self.__user.email == '':
                 print('\n!!! ---- Please enter an email. ---- !!!\n')
             else:
                 check = self.__db.check_user(self.__user.email)
+            
                 if check == True:
                     while True:
                         print('There is an old version of your list.')
@@ -36,14 +56,16 @@ class Menu:
                                 print("Not an option...please try again.")
                         except:
                             pass
-                    # take to restore menu items
                 else:
                     pass
         
     def main_menu(self):
+        """Main interface to the majority of the program. Allows the user to decide what to do next,
+        whether it is to search through and add movies, see your personal list, or send or save it."""
+
         while self.__option != 5:
             print('\nMovieList\n'+\
-                'Created by Colin Robbins for SFWRTECH\n'+\
+                'Created by Colin Robbins for SFWRTECH 4SA3\n'+\
                 'Welcome user: ' + self.__user.email + '\n' +\
                 '\t\tMAIN MENU\n'+\
                 '*********************************************\n\n'+\
@@ -56,12 +78,15 @@ class Menu:
 
             if self.__option == 1:
                 self.search_menu()
+
             elif self.__option == 2:
                 self.personal_list_menu()
+            
             elif self.__option == 3:
                 self.__send_email = SendEmail(self.__user.email, self.__user.movie_list)
                 self.__send_email.prepare_email()
                 self.__send_email.send_email()
+            
             elif self.__option == 4:
                 print("What should the save file be named?")
                 filename = input("Save File Name ==> ")
@@ -70,13 +95,20 @@ class Menu:
                 self.__save_file.prepare_save_file()
                 self.__save_file.save_file(filename)
                 print("File has been saved in the saveFiles folder.")
+            
             elif self.__option == 5:
                 print('Saving to Database...')
                 self.__db.update_list(self.__user.email, self.__user.movie_list)
                 input('Press any key to exit the program, save is complete.')
                 exit()
 
+            else:
+                print("Not an option. Try again.")
+
     def search_menu(self):
+        """Menu used to call the Search class and supply it with a query. Then print out the
+        results for both IMDb and TMDb."""
+
         while True:
             header = '\nSearch Menu\n' +\
                      '\n' +\
@@ -134,15 +166,21 @@ class Menu:
                 print('Not an option. Try again.')
 
     def personal_list_menu(self):
+        """Used to view the list and remove entries if no longer required."""
+
         while True:
             print('This is the movie list for: ' + self.__user.email + '\n' +\
                   '\t\tPersonal Movie List\n' +\
                   '*********************************************\n\n')
+            
             personal_list = self.__user.view_movie_list()
+            
+            # If personal list is empty, return no results.
             if personal_list == []:
                 print('No movies currently added to list.')
                 input('Press any key to return to the menu...')
                 break
+            # else print for the each list by api check type.
             else:
                 try:
                     print('IMDb')
@@ -173,6 +211,8 @@ class Menu:
                         print('\nItem has been removed.\n')
                     except KeyboardInterrupt:
                         break
+                    except:
+                        print("Not a valid option. Try again.")
                 except:
                     print('No movies currently in list.')
                     input('Press any key to return to the menu...')

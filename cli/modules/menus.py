@@ -11,6 +11,7 @@ from modules.objectsql import UseDatabase
 from modules.apicalls import Search
 from modules.user import User
 from modules.sendsave import SendEmail, SaveFile
+from modules.clearscreen import clear
 class Menu:
     """Used to create and execute different visual menues for ease of access."""
 
@@ -35,24 +36,29 @@ class Menu:
             self.__user.update_email(email)
             
             if self.__user.email == None or self.__user.email == '':
+                clear()
                 print('\n!!! ---- Please enter an email. ---- !!!\n')
             else:
                 check = self.__db.check_user(self.__user.email)
             
                 if check == True:
                     while True:
-                        print('There is an old version of your list.')
+                        print('\nThere is an old version of your list.')
                         print('Would you like to restore it?')
                         try:
                             option = str.upper(input("(Y or N) ==> "))
                             if option == "Y":
                                 self.__db.restore_movie_list(self.__user.email, self.__user.movie_list)
+                                clear()
                                 print('List Restored.')
                                 input('Press any key to continue to the program...')
+                                clear()
                                 break
                             elif option == 'N':
+                                clear()
                                 break
                             else:
+                                clear()
                                 print("Not an option...please try again.")
                         except:
                             pass
@@ -77,16 +83,19 @@ class Menu:
             self.__option = int(input('Option ==> '))
 
             if self.__option == 1:
+                clear()
                 self.search_menu()
 
             elif self.__option == 2:
+                clear()
                 self.personal_list_menu()
             
             elif self.__option == 3:
                 self.__send_email = SendEmail(self.__user.email, self.__user.movie_list)
                 self.__send_email.prepare_email()
                 self.__send_email.send_email()
-            
+                clear()
+
             elif self.__option == 4:
                 print("What should the save file be named?")
                 filename = input("Save File Name ==> ")
@@ -95,7 +104,9 @@ class Menu:
                 self.__save_file.prepare_save_file()
                 self.__save_file.save_file(filename)
                 print("File has been saved in the saveFiles folder.")
-            
+                input('Press any key to return to menu...')
+                clear()
+
             elif self.__option == 5:
                 print('Saving to Database...')
                 self.__db.update_list(self.__user.email, self.__user.movie_list)
@@ -103,6 +114,7 @@ class Menu:
                 exit()
 
             else:
+                clear()
                 print("Not an option. Try again.")
 
     def search_menu(self):
@@ -123,6 +135,7 @@ class Menu:
                 print("Search takes roughly 30 seconds to complete...")
                 results = self.__search.search(movieString)
                 while True:
+                    clear()
                     print(header+\
                           '(1)\tIMDb (Internet Media Database) Results\n'+\
                           '(2)\tTMDb (The Movie Database) Results\n'+\
@@ -130,6 +143,7 @@ class Menu:
                     try:
                         choice = int(input('Option ==> '))
                         if choice == 1:
+                            clear()
                             print(header+\
                                   'IMDb Results\n\n')
                             for x in range(0,3):
@@ -143,6 +157,7 @@ class Menu:
                             else:
                                 self.__user.movie_list.append(['IMDb',results['IMDb'][movie_choice][0],results['IMDb'][movie_choice][1]])
                         elif choice == 2:
+                            clear()
                             print(header+\
                                   'TMDb Results\n\n')
                             for x in range(0,3):
@@ -156,15 +171,22 @@ class Menu:
                             else:
                                 self.__user.movie_list.append(['TMDb',results['TMDb'][movie_choice][0],results['TMDb'][movie_choice][1]])
                         elif choice == 3:
+                            clear()
                             break
                         else:
+                            clear()
                             print('Not an option try again.')
+                            input('Press any key to continue...')
                     except KeyboardInterrupt:
+                        clear()
                         break
             except KeyboardInterrupt:
+                clear()
                 break
             except:
-                print('Not an option. Try again.')
+                clear()
+                print('Not an option try again.')
+                input('Press any key to continue...')
 
     def personal_list_menu(self):
         """Used to view the list and remove entries if no longer required."""
@@ -209,12 +231,16 @@ class Menu:
                     try:
                         choice = int(input('Option ==> '))
                         del self.__user.movie_list[choice]
+                        clear()
                         print('\nItem has been removed.\n')
                     except KeyboardInterrupt:
+                        clear()
                         break
                     except:
+                        clear()
                         print("Not a valid option. Try again.")
                 except:
+                    clear()
                     print('No movies currently in list.')
                     input('Press any key to return to the menu...')
                     break

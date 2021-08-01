@@ -53,6 +53,7 @@ class SendEmail:
             server.sendmail(self.__sender_email, self.email, self.__subject+self.__message)
             server.close()
             print("Email sent.")
+            input('Press any key to return to menu...')
         except:
             print("Couldn't send email.'")
             input("Press any key to return to menu...")
